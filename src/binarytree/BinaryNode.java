@@ -63,6 +63,14 @@ public class BinaryNode<T extends Comparable> {
         }
     }
     
+    public void removeChild(BinaryNode child) {
+        if(child.childType() == ChildType.LEFT) {
+            leftChild = null;
+        } else {
+            rightChild = null;
+        }
+    }
+    
     public void setContent(T c) {
         content = c;
     }

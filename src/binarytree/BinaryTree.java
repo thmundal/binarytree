@@ -29,7 +29,8 @@ public class BinaryTree<T extends Comparable> {
         if(size() == 0) {
             root = n;
         } else {
-            FindInsertPoint(root, (T) n.val()).addChild(n);
+            Find(root, (T) n.val()).addChild(n);
+            System.out.println("DET ER EN BUG HER I ADD, FIKS DETTE FØR DU LEVERER!");
             //BinaryNode _n = Find(root, (T) n.val(), true);
             //_n.addChild(n);
             //System.out.println("Adding " + n.val() + " after Node val:" + _n.val());
@@ -50,48 +51,39 @@ public class BinaryTree<T extends Comparable> {
         return Find(root, content);
     }
     
-    public BinaryNode Find(BinaryNode node, T content) {
-        return Find(node, content, false);
-    }
     
-    public BinaryNode FindInsertPoint(BinaryNode node, T content) {
+    public BinaryNode Find(BinaryNode node, T content) {
         BinaryNode left = node.leftChild();
         BinaryNode right = node.rightChild();
         
         if(right != null) {
             if(node.val().compareTo(content) < 0) {
-                return FindInsertPoint(right, content);
+                return Find(right, content);
             }
         }
         
         if(left != null) {
             if(node.val().compareTo(content) > 0) {
-                return FindInsertPoint(left, content);
+                return Find(left, content);
             }
         }
         //System.out.println("Inspecting " + node.val() + (left!=null?" leftchild is " + left.val():""));
         return node;
     }
-    
-    public BinaryNode Find(BinaryNode node, T content, boolean add) {
-        if(content.compareTo(node.val()) == 0) {
-            //System.out.println("Same..");
+    /*
+    public BinaryNode Find(BinaryNode node, T content) {
+        if(node.val().compareTo(content) == 0) {
             return node;
-        } else if(node.leftChild() != null && content.compareTo(node.val()) > 0) {
+        } else if(node.leftChild() != null && node.val().compareTo(content) > 0) {
             // Search from right tree
-            //System.out.println("Larger");
-            return Find(node.leftChild(), content, add);
-        } else if(node.rightChild() != null && content.compareTo(node.val()) < 0) {
-            //System.out.println("Smaller");
+            return Find(node.leftChild(), content);
+        } else if(node.rightChild() != null && node.val().compareTo(content) < 0) {
             // Seach from left tree
-            return Find(node.rightChild(), content, add);
+            return Find(node.rightChild(), content);
         } else {
-            if(!add)
-                return null;
-            else
-                return node;
+            return node;
         }
-    }
+    }*/
     
     
     public void TraversePreOrder(BinaryNode node, TraverseCallback cb) {
@@ -148,15 +140,22 @@ public class BinaryTree<T extends Comparable> {
     }
     
     public void Remove(int v) {
-        Remove((T) new BinaryValue(v));
+        BinaryNode<T> valNode = new BinaryNode(new BinaryValue(v));
+        Remove(valNode.val());
     }
     
     public void Remove(T v) {
-        BinaryNode n = Find(root, v);
+        BinaryNode<T> n = Find(root, v);
         
+        if(n == null) {
+            System.out.println("Cannot find node with value " + v);
+            return;
+        }
         BinaryNode p = n.getParent();
         
-        //if(p == null) {
+        // If the node we are removing does not have a parent node, we are removint the
+        // root node, and need to handle this special case
+        if(p == null) {
             // New root node
             BinaryNode newRoot = n.rightChild();
             BinaryNode leftChild = n.leftChild();
@@ -170,7 +169,42 @@ public class BinaryTree<T extends Comparable> {
             
             // Register the new root node
             root = newRoot;
-        //}
+        } else {
+            System.out.println("----------- DELETE OPERATION -------------");
+            // 0. Identidy parent node
+            // 1. Identify the node to delete
+            // 2. Find the node that should take its place (right child)
+            // 3. Identify deleted node's left child
+            // 4. Move the left child as far down to the left of node in pt2 as possible
+            BinaryNode parent_node = p;
+            BinaryNode node_to_delete = n;
+            BinaryNode replacement_node = node_to_delete.rightChild();
+            BinaryNode child_to_move = node_to_delete.leftChild();
+
+            System.out.println("Identified node to delete with value " + v);
+            System.out.println("Identified parent node with value " + p.val());
+            
+            // Remove the node's reference from its parent
+            p.removeChild(node_to_delete);
+            
+            // If we find a replacement node, meaning there are more nodes after this
+            if(replacement_node != null) {
+                System.out.println("Identified replacement node with value " + replacement_node.val());
+                parent_node.addChild(replacement_node, BinaryNode.ChildType.RIGHT);
+                replacement_node.setParent(parent_node);
+            } else {
+                // If there are no nodes to the right of the one we are removing, the parent has to be the new root from this point on
+                replacement_node = p;
+            }
+            
+            // If the node had left children, we need to move them to the lowest point in the tree
+            if(child_to_move != null) {
+                System.out.println("Identified node to move with value " + child_to_move.val());
+                BinaryNode lowestPoint = findLowestValue(replacement_node);
+                child_to_move.setParent(lowestPoint);
+                lowestPoint.addChild(child_to_move, BinaryNode.ChildType.LEFT);
+            }
+        }
     }
     
     public BinaryNode findLowestValue(BinaryNode n) {
@@ -179,12 +213,6 @@ public class BinaryTree<T extends Comparable> {
         
         return findLowestValue(n.leftChild());
     }
-}
-
-class TraverseType {
-    public static final int IN_ORDER = 1;
-    public static final int PRE_ORDER = 2;
-    public static final int POST_ORDER = 3;
 }
 
 @FunctionalInterface
