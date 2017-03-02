@@ -6,7 +6,7 @@
 package binarytree;
 
 /**
- *
+ * A class to use as a value for the binary nodes. Pretty self-explanatory
  * @author Thomas
  */
 public class BinaryValue implements Comparable<BinaryValue> {
