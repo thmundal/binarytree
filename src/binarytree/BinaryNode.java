@@ -46,7 +46,7 @@ public class BinaryNode<T extends Comparable> {
     
     /**
      * Returns this node's child type
-     * @return 
+     * @return The child type
      */
     public int childType() {
         return childType;
@@ -56,7 +56,7 @@ public class BinaryNode<T extends Comparable> {
      * Add a child to this node
      * @param child     The node to add
      * @param t         The type of child; right or left
-     * @return 
+     * @return          Returns the child that was added
      */
     public BinaryNode addChild(BinaryNode child, int t) {
         child.setParent(this);

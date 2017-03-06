@@ -40,8 +40,8 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Function to engage a search for a node with given content
-     * @param content
-     * @return 
+     * @param content   Content to search for
+     * @return          The node that was found
      */
     public BinaryNode Search(T content) {
         return Find(root, content);
@@ -49,9 +49,9 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Search algorithm to identify node with a given content starting from the given node
-     * @param node
-     * @param content
-     * @return 
+     * @param node      The node to start searching from
+     * @param content   The content to search for
+     * @return          The node that was found
      */
     public BinaryNode Find(BinaryNode node, T content) {
         BinaryNode left = node.leftChild();
@@ -87,9 +87,9 @@ public class BinaryTree<T extends Comparable> {
      * Function to find the point at which we should insert a node with a given value
      * Similar to the search algorithm, but it returns the last occurance of the content value
      * if it exists, or the closest value to append on
-     * @param node
-     * @param content
-     * @return 
+     * @param node      The node to begin search from
+     * @param content   The content to search for
+     * @return          The node that was found
      */
     public BinaryNode FindAppendPoint(BinaryNode node, T content) {
         if(node.leftChild() != null && node.val().compareTo(content) > 0) {
@@ -105,8 +105,8 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Traversing the tree pre-order starting from a given node, and performs a callback function at each step
-     * @param node
-     * @param cb 
+     * @param node  Start node
+     * @param cb    Callback function
      */
     public void TraversePreOrder(BinaryNode node, TraverseCallback cb) {
         // If the current node is null, there is no node to do operations on, return
@@ -128,7 +128,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Alias function to start traversing from root
-     * @param cb 
+     * @param cb    Callback function
      */
     public void TraversePreOrder(TraverseCallback cb) {
         TraversePreOrder(root, cb);
@@ -136,8 +136,8 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Traverse the tree post order starting from a given node and perform a callback function at each step
-     * @param node
-     * @param cb 
+     * @param node  The node to start from
+     * @param cb    Callback function
      */
     public void TraversePostOrder(BinaryNode node, TraverseCallback cb) {
         if(node.leftChild() != null) {
@@ -152,7 +152,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Alias function to traverse post order from root
-     * @param cb 
+     * @param cb    Callback function
      */
     public void TraversePostOrder(TraverseCallback cb) {
         TraversePostOrder(root, cb);
@@ -160,8 +160,8 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Traverse tree in order from a given node, performing a callback function at each step
-     * @param node
-     * @param cb 
+     * @param node  The node to start from
+     * @param cb    Callback function
      */
     public void TraverseInOrder(BinaryNode node, TraverseCallback cb) {
         if(node.leftChild() != null) {
@@ -176,7 +176,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Alias function to start traversing from root
-     * @param cb 
+     * @param cb    Callback function
      */
     public void TraverseInOrder(TraverseCallback cb) {
         TraverseInOrder(root, cb);
@@ -184,7 +184,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Returns the root node of the tree
-     * @return 
+     * @return  The root node of the Binary Tree
      */
     public BinaryNode root() {
         return root;
@@ -192,7 +192,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Shortcut function to remove a node with a given int value
-     * @param v 
+     * @param v     The integer value to remove
      */
     public void Remove(int v) {
         BinaryNode<T> valNode = new BinaryNode(new BinaryValue(v));
@@ -201,7 +201,7 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Remove a node with a given value
-     * @param v 
+     * @param v     The value to remove
      */
     public void Remove(T v) {
         BinaryNode<T> n = Find(root, v);
@@ -318,8 +318,8 @@ public class BinaryTree<T extends Comparable> {
     
     /**
      * Returns the node with the lowest value from a given point in the tree
-     * @param n
-     * @return 
+     * @param n     The node to start from
+     * @return      The node that contains the lowest value
      */
     public BinaryNode findLowestValue(BinaryNode n) {
         if(n.leftChild() == null)

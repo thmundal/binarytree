@@ -22,10 +22,6 @@ import jgame.*;
  * @author Thomas
  */
 public class main {
-
-    /**
-     * @param args the command line arguments
-     */
     public static Vector2 drawPos;
     public static Vector2 distance;
     public static Vector2 direction;
